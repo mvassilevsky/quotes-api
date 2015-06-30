@@ -24,6 +24,11 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   enum role: [:admin, :member]
+  before_save :set_role
 
   has_many :libraries
+
+  def set_role
+    self.role = :member
+  end
 end
