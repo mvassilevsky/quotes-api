@@ -10,6 +10,7 @@
 #  category    :string(255)      not null
 #  created_at  :datetime
 #  updated_at  :datetime
+#  library_id  :integer
 #
 
 class Quote < ActiveRecord::Base
@@ -20,6 +21,8 @@ class Quote < ActiveRecord::Base
     :category,
     presence: true
   )
+
+  belongs_to :library
 
   MAX_QUOTE_LENGTH = 200
   MAX_AUTHOR_LENGTH = 24
