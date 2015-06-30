@@ -1,0 +1,35 @@
+<h1>Listing quotes</h1>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Quote</th>
+        <th>Author</th>
+        <th>Source</th>
+        <th>Category</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @quotes.each do |quote| %>
+        <tr>
+          <td><%= truncate(quote.text, Quote::MAX_QUOTE_LENGTH)%></td>
+          <td><%= truncate(quote.author, Quote::MAX_AUTHOR_LENGTH) %></td>
+          <td><%= truncate(quote.source, Quote::MAX_SOURCE_LENGTH) %></td>
+          <td><%= quote.category %></td>
+          <td><%= link_to 'Show', quote %></td>
+          <td><%= link_to 'Edit', edit_quote_path(quote) %></td>
+          <td><%= link_to 'Destroy', quote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+<%= link_to 'New Quote', new_quote_path %>
