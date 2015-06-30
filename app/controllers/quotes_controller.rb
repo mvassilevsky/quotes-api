@@ -37,7 +37,7 @@ class QuotesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /quotes/1
+  # PATCH/PUT /quotes/1e
   # PATCH/PUT /quotes/1.json
   def update
     respond_to do |format|
@@ -59,6 +59,11 @@ class QuotesController < ApplicationController
       format.html { redirect_to quotes_url }
       format.json { head :no_content }
     end
+  end
+
+  # Only works in Postgres
+  def random
+    render text: Quote.order("RANDOM()").first.full_quote
   end
 
   private

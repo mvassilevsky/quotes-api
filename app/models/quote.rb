@@ -27,7 +27,12 @@ class Quote < ActiveRecord::Base
 
   before_validation :set_char_length
 
-  def set_char_length
-    self.char_length = text.length
+  def full_quote
+    text + " -- " + author
   end
+
+  def set_char_length
+    self.char_length = full_quote.length
+  end
+
 end
