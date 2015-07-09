@@ -13,9 +13,26 @@
 
 class Library < ActiveRecord::Base
 
-  belongs_to :user, class_name: "User", foreign_key: :user_id
+  belongs_to :owner, class_name: "User", foreign_key: :owner_id
   has_many :quotes
+  enum access_level: [:hidden, :shown]
 
-  enum access_level: [:hidden, :public]
+  after_initialize :set_hidden
+
+  def self.get_public_libraries
+    Library.where("access_level = ?", Library.access_levels[:shown])
+  end
+
+  def display_access_level
+    if hidden?
+      "private"
+    elsif shown?
+      "public"
+    end
+  end
+
+  def set_hidden
+    self.access_level = :hidden
+  end
 
 end

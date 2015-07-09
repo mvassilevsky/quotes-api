@@ -1,15 +1,25 @@
 class LibrariesController < ApplicationController
+  before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:index, :random]
   before_action :set_library, only: [:show, :edit, :update, :destroy]
 
   # GET /libraries
   # GET /libraries.json
   def index
-    @libraries = Library.all
+    if current_user
+      @libraries = current_user.libraries
+    else
+      @libraries = Library.get_public_libraries
+    end
   end
 
   # GET /libraries/1
   # GET /libraries/1.json
   def show
+    if @library.owner != current_user
+      redirect_to :root, flash: { error: "Not your library" }
+    end
+    @quote = Quote.new(library: @library)
   end
 
   # GET /libraries/new
@@ -25,6 +35,7 @@ class LibrariesController < ApplicationController
   # POST /libraries.json
   def create
     @library = Library.new(library_params)
+    @library.owner = current_user
 
     respond_to do |format|
       if @library.save
@@ -61,6 +72,13 @@ class LibrariesController < ApplicationController
     end
   end
 
+  # Only works in Postgres
+  def random
+    headers['Access-Control-Allow-Origin'] = '*'
+    quotes = Library.find(params[:id]).quotes
+    render text: quotes.order("RANDOM()").first.full_quote
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_library
@@ -69,6 +87,6 @@ class LibrariesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def library_params
-      params[:library]
+      params.require(:library).permit(:name, :description, :access_level)
     end
 end

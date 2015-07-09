@@ -1,4 +1,11 @@
-<p id="notice"><%= notice %></p>
+<p><strong><%= @library.name %></strong></p>
+<p><%= @library.description %></p>
+<p>Access level: <%= @library.display_access_level %></p>
+<% @library.quotes.each do |quote| %>
+  <%= render "quotes/quote" %>
+<% end %>
+
+<%= render "quotes/form" %>
 
 <%= link_to 'Edit', edit_library_path(@library) %> |
 <%= link_to 'Back', libraries_path %>

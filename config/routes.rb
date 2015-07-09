@@ -1,8 +1,7 @@
 QuotesApi::Application.routes.draw do
-  resources :libraries
-  resources :libraries
-  resources :quotes do
-    collection do
+  resources :quotes
+  resources :libraries do
+    member do
       get "random"
     end
   end
@@ -11,5 +10,5 @@ QuotesApi::Application.routes.draw do
     sessions: 'users/sessions'
   }
 
-  root "quotes#index"
+  root "libraries#index"
 end

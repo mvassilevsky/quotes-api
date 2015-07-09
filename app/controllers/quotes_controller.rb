@@ -63,11 +63,6 @@ class QuotesController < ApplicationController
     end
   end
 
-  # Only works in Postgres
-  def random
-    render text: Quote.order("RANDOM()").first.full_quote
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_quote
@@ -76,6 +71,6 @@ class QuotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def quote_params
-      params.require(:quote).permit(:text, :author, :source, :char_length, :category)
+      params.require(:quote).permit(:text, :author, :source, :char_length, :category, :library_id)
     end
 end

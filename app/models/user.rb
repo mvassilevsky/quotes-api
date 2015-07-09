@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   enum role: [:admin, :member]
   before_save :set_role
 
-  has_many :libraries
+  has_many :libraries, class_name: "Library", foreign_key: "owner_id"
 
   def set_role
     self.role = :member

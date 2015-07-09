@@ -147,13 +147,17 @@ header .breadcrumb li.active {
 	margin: 0 auto;
 	padding: 20px;
 	padding-bottom:24px;
-position: relative;
+	position: relative;
 }
 
 .contentpanel::after {
 	clear: both;
 	display: block;
 	content: '';
+}
+
+.field textarea {
+	width: 100%
 }
 
 /***** FOOTER *****/
