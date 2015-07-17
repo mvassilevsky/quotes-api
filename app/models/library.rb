@@ -13,11 +13,10 @@
 
 class Library < ActiveRecord::Base
 
+  validates :name, presence: true
   belongs_to :owner, class_name: "User", foreign_key: :owner_id
   has_many :quotes
   enum access_level: [:hidden, :shown]
-
-  after_initialize :set_hidden
 
   def self.get_public_libraries
     Library.where("access_level = ?", Library.access_levels[:shown])
@@ -29,10 +28,6 @@ class Library < ActiveRecord::Base
     elsif shown?
       "public"
     end
-  end
-
-  def set_hidden
-    self.access_level = :hidden
   end
 
 end

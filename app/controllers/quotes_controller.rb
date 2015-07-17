@@ -1,7 +1,7 @@
 class QuotesController < ApplicationController
   before_action :set_quote, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  skip_after_action :authenticate_user, only: [:random]
+  skip_before_action :authenticate_user!, only: [:random, :show]
 
   # GET /quotes
   # GET /quotes.json
@@ -12,6 +12,9 @@ class QuotesController < ApplicationController
   # GET /quotes/1
   # GET /quotes/1.json
   def show
+    if @quote.library.owner != current_user && @quote.library.hidden?
+      redirect_to libraries_path, flash: { error: "Not your quote" }
+    end
   end
 
   # GET /quotes/new
@@ -30,7 +33,7 @@ class QuotesController < ApplicationController
 
     respond_to do |format|
       if @quote.save
-        format.html { redirect_to @quote, notice: 'Quote was successfully created.' }
+        format.html { redirect_to @quote.library, notice: 'Quote was successfully created.' }
         format.json { render action: 'show', status: :created, location: @quote }
       else
         format.html { render action: 'new' }

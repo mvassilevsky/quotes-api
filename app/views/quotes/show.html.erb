@@ -23,5 +23,8 @@
   <%= @quote.category %>
 </p>
 
-<%= link_to 'Edit', edit_quote_path(@quote) %> |
+<% if @quote.library.owner == current_user %>
+  <%= link_to 'Edit', edit_quote_path(@quote) %> |
+<% end %>
+
 <%= link_to 'Back', quotes_path %>

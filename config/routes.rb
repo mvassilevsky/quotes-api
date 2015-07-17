@@ -1,4 +1,6 @@
 QuotesApi::Application.routes.draw do
+  get '/about' => "static_pages#about"
+
   resources :quotes
   resources :libraries do
     member do
@@ -10,5 +12,5 @@ QuotesApi::Application.routes.draw do
     sessions: 'users/sessions'
   }
 
-  root "libraries#index"
+  root "static_pages#about"
 end

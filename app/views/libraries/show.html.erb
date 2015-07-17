@@ -2,10 +2,12 @@
 <p><%= @library.description %></p>
 <p>Access level: <%= @library.display_access_level %></p>
 <% @library.quotes.each do |quote| %>
-  <%= render "quotes/quote" %>
+  <%= render "quotes/quote", quote: quote %>
 <% end %>
 
-<%= render "quotes/form" %>
+<% if @library.owner == current_user %>
+  <%= render "quotes/form" %>
+  <%= link_to 'Edit', edit_library_path(@library) %> |
+<% end %>
 
-<%= link_to 'Edit', edit_library_path(@library) %> |
 <%= link_to 'Back', libraries_path %>

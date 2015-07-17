@@ -26,11 +26,11 @@ ActiveRecord::Schema.define(version: 20150630050735) do
   end
 
   create_table "quotes", force: :cascade do |t|
-    t.text     "text",                    null: false
-    t.string   "author",      limit: 255, null: false
-    t.string   "source",      limit: 255
-    t.integer  "char_length",             null: false
-    t.string   "category",    limit: 255, null: false
+    t.text     "text",        null: false
+    t.string   "author",      null: false
+    t.string   "source"
+    t.integer  "char_length", null: false
+    t.string   "category",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "library_id"

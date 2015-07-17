@@ -1,6 +1,6 @@
 class LibrariesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:index, :random]
+  skip_before_action :authenticate_user!, only: [:index, :random, :show]
   before_action :set_library, only: [:show, :edit, :update, :destroy]
 
   # GET /libraries
@@ -16,15 +16,15 @@ class LibrariesController < ApplicationController
   # GET /libraries/1
   # GET /libraries/1.json
   def show
-    if @library.owner != current_user
-      redirect_to :root, flash: { error: "Not your library" }
+    if @library.owner != current_user && @library.hidden?
+      redirect_to libraries_path, flash: { error: "Not your library" }
     end
     @quote = Quote.new(library: @library)
   end
 
   # GET /libraries/new
   def new
-    @library = Library.new
+    @library = Library.new(access_level: :hidden)
   end
 
   # GET /libraries/1/edit
