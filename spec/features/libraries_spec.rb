@@ -6,58 +6,46 @@ describe "libraries" do
 
   describe "index page" do
     it "displays an existing private library when logged in as its owner" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :hidden)
+      user = test_user
+      library = test_library(user, :hidden)
       sign_in_capybara(user)
       visit libraries_path
       should have_css("td", text: "testtest")
     end
 
     it "does not display an existing private library when not logged in" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :hidden)
+      user = test_user
+      library = test_library(user, :hidden)
       visit libraries_path
       should have_no_css("td", text: "testtest")
     end
 
     it "displays an existing public library when logged in" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :shown)
+      user = test_user
+      library = test_library(user, :shown)
       sign_in_capybara(user)
       visit libraries_path
       should have_css("td", text: "testtest")
     end
 
     it "displays an existing public library when not logged in" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :shown)
+      user = test_user
+      library = test_library(user, :shown)
       visit libraries_path
       should have_css("td", text: "testtest")
     end
 
     it "can't edit a library while not logged in, redirects instead" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :shown)
+      user = test_user
+      library = test_library(user, :shown)
       visit libraries_path
       click_link "Edit"
       expect(current_path).to eq(user_session_path)
     end
 
     it "can't destroy a library while not logged in, redirects instead" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :shown)
+      user = test_user
+      library = test_library(user, :shown)
       visit libraries_path
       click_link "Destroy"
       expect(current_path).to eq(user_session_path)
@@ -66,7 +54,7 @@ describe "libraries" do
 
   describe "new page" do
     it "navigates to new library page and creates a new library" do
-      user = User.create(email: "test@test.com", password: "password")
+      user = test_user
       sign_in_capybara(user)
       visit libraries_path
       click_link "New Library"
@@ -77,7 +65,7 @@ describe "libraries" do
     end
 
     it "creates a new private library" do
-      user = User.create(email: "test@test.com", password: "password")
+      user = test_user
       sign_in_capybara(user)
       visit new_library_path
       fill_in "Name", with: "Test Library"
@@ -88,7 +76,7 @@ describe "libraries" do
     end
 
     it "creates a new public library" do
-      user = User.create(email: "test@test.com", password: "password")
+      user = test_user
       sign_in_capybara(user)
       visit new_library_path
       fill_in "Name", with: "Test Library"
@@ -100,11 +88,23 @@ describe "libraries" do
   end
 
   describe "show page" do
+    it "redirects when accessing a private library when not logged in" do
+      user = test_user
+      library = test_library(user, :hidden)
+      visit library_path(library.id)
+      expect(current_path).to eq(libraries_path)
+    end
+
+    it "shows a public library when not logged in" do
+      user = test_user
+      library = test_library(user, :shown)
+      visit library_path(library.id)
+      expect(current_path).to eq(library_path(library.id))
+    end
+
     it "displays the library title, description, and access level" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :hidden)
+      user = test_user
+      library = test_library(user, :hidden)
       sign_in_capybara(user)
       visit library_path(library.id)
       should have_css("strong", text: "test")
@@ -113,10 +113,8 @@ describe "libraries" do
     end
 
     it "creates and displays a new quote" do
-      user = User.create(email: "test@test.com", password: "password")
-      library = user.libraries.create(name: "test",
-                                      description: "testtest",
-                                      access_level: :hidden)
+      user = test_user
+      library = test_library(user, :hidden)
       sign_in_capybara(user)
       visit library_path(library.id)
       fill_in "Text", with: "Test quote"
@@ -128,4 +126,46 @@ describe "libraries" do
     end
   end
 
+  describe "edit page" do
+    it "can change a library's name" do
+      user = test_user
+      library = test_library(user, :hidden)
+      sign_in_capybara(user)
+      visit edit_library_path(library.id)
+      fill_in "Name", with: "Changed name"
+      click_button "Update Library"
+      expect(Library.last.name).to eq("Changed name")
+    end
+
+    it "can change a library's description" do
+      user = test_user
+      library = test_library(user, :hidden)
+      sign_in_capybara(user)
+      visit edit_library_path(library.id)
+      fill_in "Description", with: "Changed description"
+      click_button "Update Library"
+      expect(Library.last.description).to eq("Changed description")
+    end
+
+    it "can change a library's access level" do
+      user = test_user
+      library = test_library(user, :hidden)
+      sign_in_capybara(user)
+      visit edit_library_path(library.id)
+      choose "public"
+      click_button "Update Library"
+      expect(Library.last.access_level).to eq("shown")
+    end
+  end
+
+end
+
+def test_user
+  User.create(email: "test@test.com", password: "password")
+end
+
+def test_library(user, visibility)
+  user.libraries.create(name: "test",
+                        description: "testtest",
+                        access_level: visibility)
 end
