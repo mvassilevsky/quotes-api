@@ -1,6 +1,6 @@
 class LibrariesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:index, :random, :show]
+  skip_before_action :authenticate_user!, only: [:index, :random, :iframe, :show]
   before_action :set_library, only: [:show, :edit, :update, :destroy]
 
   # GET /libraries
@@ -75,18 +75,32 @@ class LibrariesController < ApplicationController
   # Only works in Postgres
   def random
     headers['Access-Control-Allow-Origin'] = '*'
-    quotes = Library.find(params[:id]).quotes
-    render text: quotes.order("RANDOM()").first.full_quote
+    @quote = get_random(params[:id], params[:max_chars])
+    render text: @quote.full_quote
+  end
+
+  def iframe
+    @quote = get_random(params[:id], params[:max_chars])
+    render layout: false
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_library
-      @library = Library.find(params[:id])
+      @library = Library.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def library_params
       params.require(:library).permit(:name, :description, :access_level)
+    end
+
+    def get_random(id, max_chars)
+      quotes = Quote.where("library_id = ?", id)
+      if max_chars
+        quotes = quotes.where("char_length <= ?", max_chars)
+      end
+      quote = quotes.order("RANDOM()").first
+      quote || Quote.new(text: "", author: "", category: "")
     end
 end

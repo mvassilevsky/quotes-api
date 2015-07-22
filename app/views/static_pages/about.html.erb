@@ -1,2 +1,29 @@
-<h1>Quotes API</h1>
-<p>Find me in app/views/static_pages/about.html.erb</p>
+<div class="text-center">
+  <h1>Quotes API</h1>
+  <h2>Easily add random quotes to your website</h2>
+</div>
+
+<h3>Example with existing library</h3>
+<p>You can use Quotes API as an iframe or with jQuery.</p>
+<p>For a library of math quotes called "math":</p>
+<h4>iframe</h4>
+<code>
+  &lt;iframe src=&quot;https://quotes.herokuapp.com/libraries/math/iframe&quot;&lt;/iframe&gt;
+</code>
+<h4>jQuery</h4>
+<p>Suppose you have a div element that you want to contain a quote:</p>
+<pre>&lt;div id=&quot;quote&quot;&gt;&lt;/div&gt;</pre>
+<p>This is the jQuery script to put a quote in that div:</p>
+<pre>
+  &lt;script&gt;
+    $(function() {
+      $.get(&quot;https://quotes.herokuapp.com/libraries/math/random&quot;, function(data) {
+        $(&quot;#quote&quot;).html(data);
+      });
+    });
+  &lt;/script&gt;
+</pre>
+<h3>
+  <%= link_to "Sign up", new_user_registration_path %> to add your own quote libraries
+</h3>
+<p>A public library can be viewed by anyone. A private library can only be viewed by its owner.</p>

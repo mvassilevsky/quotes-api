@@ -12,6 +12,15 @@ describe Library do
       library = Library.new(name: "")
       expect(library).to be_invalid
     end
+
+    it "can't have duplicate names" do
+      user = User.create(email: "test@test.com", password: "password")
+      library1 = user.libraries.create(name: "test library",
+                                       access_level: :hidden)
+      library2 = user.libraries.create(name: "test library",
+                                       access_level: :hidden)
+      expect(library2).to be_invalid
+    end
   end
 
   describe "access level" do

@@ -158,6 +158,56 @@ describe "libraries" do
     end
   end
 
+  describe "random" do
+    it "gets a random quote" do
+      user = test_user
+      library = test_library(user, :shown)
+      quote = library.quotes.create(text: "test quote",
+                                    author: "test author",
+                                    category: "test quotes")
+      visit random_library_path(library.id)
+      should have_content("test quote -- test author")
+    end
+
+    it "limits quotes by length of max_chars" do
+      user = test_user
+      library = test_library(user, :shown)
+      quote1 = library.quotes.create(text: "test quote",
+                                     author: "test author",
+                                     category: "test quotes")
+      quote2 = library.quotes.create(text: "long long long long quote",
+                                     author: "long long long long author",
+                                     category: "long long long long quotes")
+      visit random_library_path(library.id, max_chars: 25)
+      should have_content("test quote -- test author")
+    end
+
+    it "returns an empty string if all quotes are longer than max_chars" do
+      user = test_user
+      library = test_library(user, :shown)
+      quote1 = library.quotes.create(text: "test quote",
+                                    author: "test author",
+                                    category: "test quotes")
+      quote2 = library.quotes.create(text: "long long long long quote",
+                                     author: "long long long long author",
+                                     category: "long long long long quotes")
+      visit random_library_path(library.id, max_chars: 1)
+      expect(page.body).to eq("")                   
+    end
+  end
+
+  describe "iframe" do
+    it "gets a random quote" do
+      user = test_user
+      library = test_library(user, :shown)
+      quote = library.quotes.create(text: "test quote",
+                                    author: "test author",
+                                    category: "test quotes")
+      visit iframe_library_path(library.id)
+      should have_content("test quote -- test author")
+    end
+  end
+
 end
 
 def test_user

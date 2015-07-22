@@ -31,7 +31,13 @@ class Quote < ActiveRecord::Base
   before_validation :set_char_length
 
   def full_quote
-    text + " -- " + author
+    if text.blank? && author.blank?
+      ""
+    elsif author.blank?
+      text
+    else
+      text + " -- " + author
+    end
   end
 
   def set_char_length

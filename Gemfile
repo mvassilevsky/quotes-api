@@ -37,6 +37,8 @@ gem 'devise'
 
 gem 'devise-bootstrap-views'
 
+gem 'friendly_id'
+
 group :development do
   gem 'annotate'
   gem 'byebug'

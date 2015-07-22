@@ -5,6 +5,7 @@ QuotesApi::Application.routes.draw do
   resources :libraries do
     member do
       get "random"
+      get "iframe"
     end
   end
 

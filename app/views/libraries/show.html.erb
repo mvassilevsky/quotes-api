@@ -1,4 +1,10 @@
-<p><strong><%= @library.name %></strong></p>
+<h1>
+  <%= @library.name %>
+  <div class="pull-right">
+    <%= button_tag "iframe code", class: "btn btn-primary open-iframe-modal", title: "iframe code", data: {toggle: "modal", target: "#iframe_code_modal"} %>
+    <%= button_tag "jQuery code", class: "btn btn-primary open-jQuery-modal", title: "jQuery code", data: {toggle: "modal", target: "#jQuery_code_modal"} %>
+  </div>
+</h1>
 <p><%= @library.description %></p>
 <p>Access level: <%= @library.display_access_level %></p>
 <% if @library.quotes.length > 0 %>
@@ -15,3 +21,19 @@
 <% end %>
 
 <%= link_to 'Back', libraries_path %>
+
+<!-- iframe code modal -->
+
+<%= render layout: "code", locals: { usage_type: "iframe" } do -%>
+&lt;iframe src=&quot;https://quotes.herokuapp.com/libraries/<%= @library.slug %>/iframe&quot;&lt;/iframe&gt;
+<% end %>
+
+<%= render layout: "code", locals: { usage_type: "jQuery" } do -%>
+&lt;script&gt;
+$(function() {
+  $.get(&quot;https://quotes.herokuapp.com/libraries/<%= @library.slug %>/random&quot;, function(data) {
+    $(&quot;#quote&quot;).html(data);
+  });
+});
+&lt;/script&gt;
+<% end %>

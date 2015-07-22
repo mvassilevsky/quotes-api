@@ -1,0 +1,18 @@
+<div class="modal fade" id="<%= usage_type %>_code_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" style="width:85%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="<%= usage_type %>CodeModalLabel">
+          <%= usage_type %> code
+        </h4>
+      </div>
+      <div class="modal-body">
+        <pre><%= yield %></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

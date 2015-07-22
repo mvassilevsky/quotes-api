@@ -19,6 +19,16 @@ describe Quote do
       quote = Quote.new(text: "text", author: "author")
       expect(quote.full_quote).to eq("text -- author")
     end
+
+    it "generates text if author is blank" do
+      quote = Quote.new(text: "text", author: "")
+      expect(quote.full_quote).to eq("text")
+    end
+
+    it "generates an empty string if text and author are blank" do
+      quote = Quote.new(text: "", author: "")
+      expect(quote.full_quote).to eq("")
+    end
   end
 
   describe "set char length" do

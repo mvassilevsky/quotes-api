@@ -12,8 +12,10 @@
 #
 
 class Library < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :slugged
 
-  validates :name, presence: true
+  validates :name, uniqueness: { scope: :owner_id }, presence: true
   belongs_to :owner, class_name: "User", foreign_key: :owner_id
   has_many :quotes
   enum access_level: [:hidden, :shown]
@@ -22,6 +24,13 @@ class Library < ActiveRecord::Base
 
   def self.get_public_libraries
     Library.where("access_level = ?", Library.access_levels[:shown])
+  end
+
+  def slug_candidates
+    [
+      :name,
+      [:name, :owner_id]
+    ]
   end
 
   def display_access_level
