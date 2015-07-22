@@ -39,6 +39,8 @@ gem 'devise-bootstrap-views'
 
 gem 'friendly_id'
 
+gem 'newrelic_rpm'
+
 group :development do
   gem 'annotate'
   gem 'byebug'
