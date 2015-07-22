@@ -14,7 +14,7 @@
       <% @libraries.each do |library| %>
         <tr>
           <td><%= link_to library.name, library %></td>
-          <td><%= shorten(library.description, 40) %></td>
+          <td><%= truncate(library.description, length: Library::MAX_DESCRIPTION_LENGTH) %></td>
           <td><%= link_to 'Edit', edit_library_path(library) %></td>
           <td><%= link_to 'Destroy', library, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>

@@ -18,6 +18,8 @@ class Library < ActiveRecord::Base
   has_many :quotes
   enum access_level: [:hidden, :shown]
 
+  MAX_DESCRIPTION_LENGTH = 40
+
   def self.get_public_libraries
     Library.where("access_level = ?", Library.access_levels[:shown])
   end

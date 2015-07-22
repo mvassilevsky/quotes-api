@@ -12,5 +12,11 @@ QuotesApi::Application.routes.draw do
     sessions: 'users/sessions'
   }
 
-  root "static_pages#about"
+  authenticated :user do
+    root to: "libraries#index", as: :authenticated_root
+  end
+
+  unauthenticated do
+    root "static_pages#about"
+  end
 end

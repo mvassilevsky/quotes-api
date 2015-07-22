@@ -35,6 +35,8 @@ gem 'bootswatch-rails'
 
 gem 'devise'
 
+gem 'devise-bootstrap-views'
+
 group :development do
   gem 'annotate'
   gem 'byebug'

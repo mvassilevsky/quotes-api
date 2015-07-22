@@ -1,8 +1,12 @@
 <p><strong><%= @library.name %></strong></p>
 <p><%= @library.description %></p>
 <p>Access level: <%= @library.display_access_level %></p>
-<% @library.quotes.each do |quote| %>
-  <%= render "quotes/quote", quote: quote %>
+<% if @library.quotes.length > 0 %>
+  <% @library.quotes.each do |quote| %>
+    <%= render "quotes/quote", quote: quote %>
+  <% end %>
+<% else %>
+  <p>You have no quotes! You can add some below.</p>
 <% end %>
 
 <% if @library.owner == current_user %>
