@@ -95,7 +95,8 @@ class LibrariesController < ApplicationController
       params.require(:library).permit(:name, :description, :access_level)
     end
 
-    def get_random(id, max_chars)
+    def get_random(friendly_id, max_chars)
+      id = Library.friendly.find(params[:id]).id
       quotes = Quote.where("library_id = ?", id)
       if max_chars
         quotes = quotes.where("char_length <= ?", max_chars)

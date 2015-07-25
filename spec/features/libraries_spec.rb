@@ -107,7 +107,7 @@ describe "libraries" do
       library = test_library(user, :hidden)
       sign_in_capybara(user)
       visit library_path(library.id)
-      should have_css("strong", text: "test")
+      should have_css("h1", text: "test")
       should have_content("testtest")
       should have_content("Access level: private")
     end
@@ -192,7 +192,7 @@ describe "libraries" do
                                      author: "long long long long author",
                                      category: "long long long long quotes")
       visit random_library_path(library.id, max_chars: 1)
-      expect(page.body).to eq("")                   
+      expect(page.body).to eq("")
     end
   end
 
