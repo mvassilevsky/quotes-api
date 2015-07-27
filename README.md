@@ -27,4 +27,4 @@ This is the jQuery script to put a quote in that div:
 
 * You can also add a `max_chars` param to the iframe or jQuery version to set a maximum length for returned quotes: ```<iframe src="https://quotes.herokuapp.com/libraries/math/iframe?max_chars=20"></iframe>``` will only return full quotes (text and author) whose length is at nost 20 characters.
 
-* Must use PostgreSQL for the database, as randomization of Postgres-specific.
+* Must use PostgreSQL for the database, as randomization is Postgres-specific.
