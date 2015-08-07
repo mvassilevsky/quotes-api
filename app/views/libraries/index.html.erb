@@ -6,7 +6,7 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
-        <th colspan="2"></th>
+        <th></th>
       </tr>
     </thead>
 
@@ -15,8 +15,16 @@
         <tr>
           <td><%= link_to library.name, library %></td>
           <td><%= truncate(library.description, length: Library::MAX_DESCRIPTION_LENGTH) %></td>
-          <td><%= link_to 'Edit', edit_library_path(library) %></td>
-          <td><%= link_to 'Destroy', library, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td class="text-right">
+            <% if current_user == library.owner %>
+              <%= link_to edit_library_path(library) do %>
+              <i class="fa fa-pencil"></i>
+              <% end %>
+              <%= link_to library, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <i class="fa fa-trash"></i>
+              <% end %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

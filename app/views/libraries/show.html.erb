@@ -1,26 +1,81 @@
+<%= link_to libraries_path do %>
+  <i class="fa fa-arrow-left"></i> Back to libraries
+<% end %>
+
 <h1>
-  <%= @library.name %>
+  <% if current_user == @library.owner %>
+    <i class="fa fa-pencil" style="font-size:14px;"></i>
+    <%= best_in_place @library, :name, as: :input, place_holder: "Untitled Library", id: "library_name_#{@library.id}", class: "hoverable" %>
+  <% else %>
+    <%= @library.name %>
+  <% end %>
   <div class="pull-right">
     <%= button_tag "iframe code", class: "btn btn-primary open-iframe-modal", title: "iframe code", data: {toggle: "modal", target: "#iframe_code_modal"} %>
     <%= button_tag "jQuery code", class: "btn btn-primary open-jQuery-modal", title: "jQuery code", data: {toggle: "modal", target: "#jQuery_code_modal"} %>
   </div>
 </h1>
-<p><%= @library.description %></p>
-<p>Access level: <%= @library.display_access_level %></p>
-<% if @library.quotes.length > 0 %>
-  <% @library.quotes.each do |quote| %>
-    <%= render "quotes/quote", quote: quote %>
+<p>
+  <% if current_user == @library.owner %>
+    <i class="fa fa-pencil" style="font-size:14px;"></i>
+    <%= best_in_place @library, :description, as: :input, place_holder: "This library doesn't have a description", id: "library_description_#{@library.id}", class: "hoverable" %>
+  <% else %>
+    <%= @library.description %>
   <% end %>
+</p>
+<p>
+  <% if current_user == @library.owner %>
+    <i class="fa fa-pencil" style="font-size:14px;"></i>
+    <%= best_in_place @library, :access_level, as: :select, collection: { "shown" => "public", "hidden" => "private" }, id: "library_access_level_#{@library.id}", class: "hoverable" %>
+  <% else %>
+    Access level: <%= @library.display_access_level %>
+  <% end %>
+</p>
+<% if @library.quotes.length > 0 %>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Quote</th>
+          <th>Author</th>
+          <th>Source</th>
+          <th>Category</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @library.quotes.each do |quote| %>
+        <tr>
+          <td>
+            <%= link_to quote do %>
+            <%= truncate(quote.text, length: Quote::MAX_QUOTE_LENGTH)%>
+            <% end %>
+          </td>
+          <td><%= truncate(quote.author, length: Quote::MAX_AUTHOR_LENGTH) %></td>
+          <td><%= truncate(quote.source, length: Quote::MAX_SOURCE_LENGTH) %></td>
+          <td><%= quote.category %></td>
+          <td class="text-right">
+            <% if current_user == @library.owner %>
+              <%= link_to edit_quote_path(quote) do %>
+                <i class="fa fa-pencil"></i>
+              <% end %>
+              <%= link_to quote, method: :delete, data: { confirm: 'Are you sure?' } do %>
+                <i class="fa fa-trash"></i>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% else %>
   <p>You have no quotes! You can add some below.</p>
 <% end %>
 
 <% if @library.owner == current_user %>
   <%= render "quotes/form" %>
-  <%= link_to 'Edit', edit_library_path(@library) %> |
 <% end %>
-
-<%= link_to 'Back', libraries_path %>
 
 <!-- iframe code modal -->
 

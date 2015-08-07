@@ -14,4 +14,11 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require turbolinks
+//= require best_in_place
+//= require jquery.purr
+//= best_in_place.purr
 //= require_tree .
+
+$(function() {
+  $(".best_in_place").best_in_place();
+});
