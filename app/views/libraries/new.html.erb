@@ -1,5 +1,13 @@
+<%= link_to libraries_path do %>
+  <i class="fa fa-arrow-left"></i> Back to libraries
+<% end %>
+
 <h1>New Library</h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Back', libraries_path %>
+<script>
+  $(function () {
+    $("#library_name").focus();
+  });
+</script>

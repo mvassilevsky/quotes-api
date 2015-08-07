@@ -1,3 +1,9 @@
+<%= link_to library_path(@quote.library) do %>
+  <i class="fa fa-arrow-left"></i> Back to <%= @quote.library.name %>
+<% end %>
+
+<h1>Quote</h1>
+
 <% if current_user == @quote.library.owner %>
   <p>
     <strong>Text:</strong>

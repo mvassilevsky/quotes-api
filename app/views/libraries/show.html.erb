@@ -70,6 +70,7 @@
   <p>You have no quotes! You can add some below.</p>
 <% end %>
 
+<h2>New Quote</h2>
 <% if @library.owner == current_user %>
   <%= render "quotes/form" %>
 <% end %>
