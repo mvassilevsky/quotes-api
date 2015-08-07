@@ -17,9 +17,6 @@
           <td><%= truncate(library.description, length: Library::MAX_DESCRIPTION_LENGTH) %></td>
           <td class="text-right">
             <% if current_user == library.owner %>
-              <%= link_to edit_library_path(library) do %>
-              <i class="fa fa-pencil"></i>
-              <% end %>
               <%= link_to library, method: :delete, data: { confirm: 'Are you sure?' } do %>
               <i class="fa fa-trash"></i>
               <% end %>

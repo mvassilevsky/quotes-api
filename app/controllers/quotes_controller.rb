@@ -66,6 +66,11 @@ class QuotesController < ApplicationController
     end
   end
 
+  def char_length
+    @quote = Quote.find(params[:id])
+    render text: @quote.char_length
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_quote

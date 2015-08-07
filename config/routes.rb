@@ -1,7 +1,11 @@
 QuotesApi::Application.routes.draw do
   get '/about' => "static_pages#about"
 
-  resources :quotes
+  resources :quotes do
+    member do
+      get "char_length"
+    end
+  end
   resources :libraries do
     member do
       get "random"

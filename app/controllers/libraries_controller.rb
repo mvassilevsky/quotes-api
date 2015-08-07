@@ -1,7 +1,7 @@
 class LibrariesController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, only: [:index, :random, :iframe, :show]
-  before_action :set_library, only: [:show, :edit, :update, :destroy]
+  before_action :set_library, only: [:show, :update, :destroy]
 
   # GET /libraries
   # GET /libraries.json
@@ -25,10 +25,6 @@ class LibrariesController < ApplicationController
   # GET /libraries/new
   def new
     @library = Library.new(access_level: :hidden)
-  end
-
-  # GET /libraries/1/edit
-  def edit
   end
 
   # POST /libraries

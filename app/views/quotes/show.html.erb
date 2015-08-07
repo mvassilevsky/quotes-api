@@ -1,28 +1,64 @@
-<p>
-  <strong>Text:</strong>
-  <%= @quote.text %>
-</p>
+<% if current_user == @quote.library.owner %>
+  <p>
+    <strong>Text:</strong>
+    <i class="fa fa-pencil" style="font-size:14px;"></i>
+    <%= best_in_place @quote, :text, as: :textarea, place_holder: "Please enter text for the quote", id: "quote_text_#{@quote.id}", class: "hoverable quote_char_length_affector" %>
+  </p>
 
-<p>
-  <strong>Author:</strong>
-  <%= @quote.author %>
-</p>
+  <p>
+    <strong>Author:</strong>
+    <i class="fa fa-pencil" style="font-size:14px;"></i>
+    <%= best_in_place @quote, :author, as: :input, place_holder: "Please enter quote author", id: "quote_author_#{@quote.id}", class: "hoverable quote_char_length_affector" %>
+  </p>
 
-<p>
-  <strong>Source:</strong>
-  <%= @quote.source %>
-</p>
+  <p>
+    <strong>Source:</strong>
+    <i class="fa fa-pencil" style="font-size:14px;"></i>
+    <%= best_in_place @quote, :source, as: :input, place_holder: "Please enter quote source", id: "quote_source_#{@quote.id}", class: "hoverable" %>
+  </p>
 
-<p>
-  <strong>Char length:</strong>
-  <%= @quote.char_length %>
-</p>
+  <p>
+    <strong>Char length:</strong>
+    <span id="quote_char_length"><%= @quote.char_length %></span>
+  </p>
 
-<p>
-  <strong>Category:</strong>
-  <%= @quote.category %>
-</p>
+  <p>
+    <strong>Category:</strong>
+    <i class="fa fa-pencil" style="font-size:14px;"></i>
+    <%= best_in_place @quote, :category, as: :input, place_holder: "Please enter quote category", id: "quote_category_#{@quote.id}", class: "hoverable" %>
+  </p>
 
-<% if @quote.library.owner == current_user %>
-  <%= link_to 'Edit', edit_quote_path(@quote), class: "btn btn-primary"%>
+<% else %>
+  <p>
+    <strong>Text:</strong>
+    <%= @quote.text %>
+  </p>
+
+  <p>
+    <strong>Author:</strong>
+    <%= @quote.author %>
+  </p>
+
+  <p>
+    <strong>Source:</strong>
+    <%= @quote.source %>
+  </p>
+
+  <p>
+    <strong>Char length:</strong>
+    <%= @quote.char_length %>
+  </p>
+
+  <p>
+    <strong>Category:</strong>
+    <%= @quote.category %>
+  </p>
 <% end %>
+
+<script>
+  $(".quote_char_length_affector").bind("ajax:success", function() {
+    $.get("<%= char_length_quote_path(@quote) %>", function(data) {
+      $("#quote_char_length").html(data);
+    });
+  });
+</script>
