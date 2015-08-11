@@ -35,21 +35,6 @@ describe "libraries" do
       should have_css("td", text: "testtest")
     end
 
-    it "can't edit a library while not logged in, redirects instead" do
-      user = test_user
-      library = test_library(user, :shown)
-      visit libraries_path
-      click_link "Edit"
-      expect(current_path).to eq(user_session_path)
-    end
-
-    it "can't destroy a library while not logged in, redirects instead" do
-      user = test_user
-      library = test_library(user, :shown)
-      visit libraries_path
-      click_link "Destroy"
-      expect(current_path).to eq(user_session_path)
-    end
   end
 
   describe "new page" do
@@ -109,7 +94,7 @@ describe "libraries" do
       visit library_path(library.id)
       should have_css("h1", text: "test")
       should have_content("testtest")
-      should have_content("Access level: private")
+      should have_content("private")
     end
 
     it "creates and displays a new quote" do
@@ -123,38 +108,6 @@ describe "libraries" do
       fill_in "Category", with: "Test quotes"
       click_button "Create Quote"
       should have_css("a", "Test quote -- Test Author")
-    end
-  end
-
-  describe "edit page" do
-    it "can change a library's name" do
-      user = test_user
-      library = test_library(user, :hidden)
-      sign_in_capybara(user)
-      visit edit_library_path(library.id)
-      fill_in "Name", with: "Changed name"
-      click_button "Update Library"
-      expect(Library.last.name).to eq("Changed name")
-    end
-
-    it "can change a library's description" do
-      user = test_user
-      library = test_library(user, :hidden)
-      sign_in_capybara(user)
-      visit edit_library_path(library.id)
-      fill_in "Description", with: "Changed description"
-      click_button "Update Library"
-      expect(Library.last.description).to eq("Changed description")
-    end
-
-    it "can change a library's access level" do
-      user = test_user
-      library = test_library(user, :hidden)
-      sign_in_capybara(user)
-      visit edit_library_path(library.id)
-      choose "public"
-      click_button "Update Library"
-      expect(Library.last.access_level).to eq("shown")
     end
   end
 
@@ -208,14 +161,4 @@ describe "libraries" do
     end
   end
 
-end
-
-def test_user
-  User.create(email: "test@test.com", password: "password")
-end
-
-def test_library(user, visibility)
-  user.libraries.create(name: "test",
-                        description: "testtest",
-                        access_level: visibility)
 end

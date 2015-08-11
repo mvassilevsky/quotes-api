@@ -5,7 +5,7 @@
 <h1>
   <% if current_user == @library.owner %>
     <i class="fa fa-pencil" style="font-size:14px;"></i>
-    <%= best_in_place @library, :name, as: :input, place_holder: "Untitled Library", id: "library_name_#{@library.id}", class: "hoverable" %>
+    <%= best_in_place @library, :name, as: :input, place_holder: "Untitled Library", class: "hoverable" %>
   <% else %>
     <%= @library.name %>
   <% end %>
@@ -17,7 +17,7 @@
 <p>
   <% if current_user == @library.owner %>
     <i class="fa fa-pencil" style="font-size:14px;"></i>
-    <%= best_in_place @library, :description, as: :input, place_holder: "This library doesn't have a description", id: "library_description_#{@library.id}", class: "hoverable" %>
+    <%= best_in_place @library, :description, as: :input, place_holder: "This library doesn't have a description", class: "hoverable" %>
   <% else %>
     <%= @library.description %>
   <% end %>
@@ -25,7 +25,7 @@
 <p>
   <% if current_user == @library.owner %>
     <i class="fa fa-pencil" style="font-size:14px;"></i>
-    <%= best_in_place @library, :access_level, as: :select, collection: { "shown" => "public", "hidden" => "private" }, id: "library_access_level_#{@library.id}", class: "hoverable" %>
+    <%= best_in_place @library, :access_level, as: :select, collection: { "shown" => "public", "hidden" => "private" }, class: "hoverable" %>
   <% else %>
     Access level: <%= @library.display_access_level %>
   <% end %>
