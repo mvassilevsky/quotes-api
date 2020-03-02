@@ -1,6 +1,5 @@
 # Quotes API
-[Heroku link][heroku]
-[heroku]: http://quotes.herokuapp.com/
+http://quotes.herokuapp.com/
 An application for storing quotes and displaying them randomly. Can be used with an iframe or with jQuery.
 ## Example
 For a library of math quotes called "math":
